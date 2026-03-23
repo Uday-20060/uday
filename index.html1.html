@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic 3D Portfolio</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- AOS Library for Scroll Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-glow: #00d2ff;
+            --secondary-glow: #9d50bb;
+            --bg-dark: #020617;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: #e2e8f0;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- Background Animation --- */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #020617 100%);
+        }
+
+        .blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(to right, var(--primary-glow), var(--secondary-glow));
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.3;
+            animation: move 20s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(0, 0); }
+            to { transform: translate(100vw, 100vh); }
+        }
+
+        /* --- Navbar --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            font-size: 1.5rem;
+            background: linear-gradient(to right, #00d2ff, #9d50bb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        nav a:hover {
+            color: var(--primary-glow);
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* --- Hero Section --- */
+        section {
+            padding: 100px 10%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .profile-container {
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .profile-img {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-glow);
+            padding: 10px;
+            box-shadow: 0 0 30px var(--primary-glow);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            object-fit: cover;
+            background: #000;
+        }
+
+        .profile-img:hover {
+            transform: rotateY(20deg) rotateX(10deg) scale(1.1);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            margin: 20px 0;
+            letter-spacing: 2px;
+        }
+
+        .btn {
+            padding: 12px 35px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.4s;
+            text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 0 25px var(--primary-glow);
+        }
+
+        /* --- Cards & Glassmorphism --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            margin-top: 50px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: 20px;
+            transition: 0.5s;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .card:hover {
+            transform: translateY(-15px) rotateX(5deg);
+            border-color: var(--primary-glow);
+            box-shadow: 0 15px 40px rgba(0, 210, 255, 0.2);
+        }
+
+        /* --- Skills Progress --- */
+        .skill-box {
+            width: 100%;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .progress-bg {
+            background: rgba(255,255,255,0.1);
+            height: 10px;
+            border-radius: 5px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-glow), var(--secondary-glow));
+            width: 0;
+            transition: 2s ease-out;
+        }
+
+        /* --- Form --- */
+        form {
+            max-width: 600px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input, textarea {
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            outline: none;
+        }
+
+        input:focus { border-color: var(--primary-glow); }
+
+        /* --- Modal --- */
+        #cert-modal {
+            display: none;
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #cert-modal img {
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 10px;
+            box-shadow: 0 0 50px var(--primary-glow);
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            nav { padding: 15px 20px; }
+            nav ul { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-gradient"></div>
+    <div class="blob"></div>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">PORTFOLIO</div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home">
+        <div class="profile-container" data-aos="zoom-in">
+            <!-- Use a placeholder if image doesn't exist -->
+            <img src="uday img.jpg" alt="Profile" class="profile-img" id="hero-img">
+        </div>
+        <h1 id="hero-title">ALEX STARK</h1>
+        <p style="font-size: 1.2rem; color: var(--primary-glow);" data-aos="fade-up">Full Stack Developer & 3D Designer</p>
+        <div style="margin-top: 30px;" data-aos="fade-up" data-aos-delay="200">
+            <a href="uday resume.jpg" class="btn">View Resume <i class="fas fa-download"></i></a>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2 class="logo" style="font-size: 2.5rem;" data-aos="fade-down">My Expertise</h2>
+        <div class="grid">
+            <div class="card" data-aos="flip-left">
+                <i class="fab fa-react" style="font-size: 3rem; color: #61dbfb;"></i>
+                <h3>Frontend</h3>
+                <div class="skill-box">
+                    <span>React / HTML / CSS</span>
+                    <div class="progress-bg"><div class="progress-bar" style="width: 90%;"></div></div>
+                </div>
+            </div>
+            <div class="card" data-aos="flip-left" data-aos-delay="100">
+                <i class="fab fa-node-js" style="font-size: 3rem; color: #68a063;"></i>
+                <h3>Backend</h3>
+                <div class="skill-box">
+                    <span>Node.js / Python</span>
+                    <div class="progress-bg"><div class="progress-bar" style="width: 75%;"></div></div>
+                </div>
+            </div>
+            <div class="card" data-aos="flip-left" data-aos-delay="200">
+                <i class="fas fa-cube" style="font-size: 3rem; color: #ff9900;"></i>
+                <h3>3D Design</h3>
+                <div class="skill-box">
+                    <span>Three.js / Blender</span>
+                    <div class="progress-bg"><div class="progress-bar" style="width: 60%;"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2 class="logo" style="font-size: 2.5rem;" data-aos="fade-up">Featured Projects</h2>
+        <div class="grid">
+            <div class="card" data-aos="zoom-in-up">
+                <div style="height: 150px; background: url('https://via.placeholder.com/400x200') center/cover; border-radius: 10px;"></div>
+                <h3 style="margin-top: 15px;">CyberSpace Dashboard</h3>
+                <p>A futuristic management tool with 3D data visualization.</p>
+                <a href="uday r project.pdf" class="btn" style="margin-top: 15px; padding: 8px 20px;">Open Project</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificates -->
+    <section id="certificates">
+        <h2 class="logo" style="font-size: 2.5rem;" data-aos="fade-right">Certifications</h2>
+        <div class="grid">
+            <div class="card" data-aos="fade-up">
+                <h3>Python</h3>
+                <p>Beginner Certificate - 2025</p>
+                <a href="uday python.jpg" class="view btn"></a>
+                <button class="btn" style="margin-top:10px" onclick="openCert('https://via.placeholder.com/800x600?text=Google+Certificate')">View Certificate</button>
+            </div>
+            <div class="card" data-aos="fade-up" data-aos-delay="100">
+                <h3>javascirpt</h3>
+                <p>simple learn - 2025</p>
+                <a href="uday java.jpg" class="view btn"></a>
+                <button class="btn" style="margin-top:10px" onclick="openCert('https://via.placeholder.com/800x600?text=AWS+Certificate')">View Certificate</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education -->
+    <section id="education">
+        <h2 class="logo" style="font-size: 2.5rem;" data-aos="fade-down">Education</h2>
+        <div class="card" style="max-width: 800px; width: 100%;" data-aos="zoom-in">
+            <h3>Bachelor of Science in Computer Science</h3>
+            <p style="color: var(--primary-glow);">University of Tech | 2019 - 2023</p>
+            <p style="margin-top: 10px;">Specialized in Artificial Intelligence and Web Technologies. Graduated with honors.</p>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <h2 class="logo" style="font-size: 2.5rem;" data-aos="fade-up">Get In Touch</h2>
+        <form data-aos="fade-up">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea rows="5" placeholder="Your Message" required></textarea>
+            <button type="submit" class="btn">Send Message <i class="fas fa-paper-plane"></i></button>
+            <div class="socials">
+                <a href="UDAYA BE"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/uday-be-300b543b6/"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/its__uday_143_?igsh=eTBqN2NrbDJobndm"><i class="fab fa-instagram"></i></a>
+            </div>
+        </form>
+    </section>
+
+    <!-- Modal for Certificates -->
+    <div id="cert-modal" onclick="this.style.display='none'">
+        <img src="" id="modal-img">
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({ duration: 1000, once: true });
+
+        // GSAP 3D Hover Effect for Hero
+        const heroImg = document.getElementById('hero-img');
+        document.addEventListener('mousemove', (e) => {
+            let x = (window.innerWidth / 2 - e.pageX) / 25;
+            let y = (window.innerHeight / 2 - e.pageY) / 25;
+            gsap.to(heroImg, { rotationY: x, rotationX: y, duration: 0.5 });
+        });
+
+        // Typing effect for Name
+        const heroTitle = document.getElementById('hero-title');
+        const text = heroTitle.innerText;
+        heroTitle.innerText = '';
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                heroTitle.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 150);
+            }
+        }
+        typeWriter();
+
+        // Certificate Modal Logic
+        function openCert(url) {
+            document.getElementById('modal-img').src = url;
+            document.getElementById('cert-modal').style.display = 'flex';
+        }
+
+        // Animated Progress Bars on Scroll
+        window.addEventListener('scroll', () => {
+            const bars = document.querySelectorAll('.progress-bar');
+            bars.forEach(bar => {
+                const rect = bar.getBoundingClientRect();
+                if(rect.top < window.innerHeight) {
+                    bar.style.width = bar.getAttribute('style').split('width:')[1];
+                }
+            });
+        });
+    </script>
+</body>
+</html>
